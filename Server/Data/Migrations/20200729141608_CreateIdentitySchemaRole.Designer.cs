@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Contoso.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200729050154_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20200729141608_CreateIdentitySchemaRole")]
+    partial class CreateIdentitySchemaRole
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,6 +193,22 @@ namespace Contoso.Server.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "295781b0-faa1-45bc-8c3a-b6879161e7cb",
+                            ConcurrencyStamp = "0b83f6f8-75be-4b72-a882-48445f41c1f6",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "a94bc94d-d64f-4788-a986-2922f6e31455",
+                            ConcurrencyStamp = "556005eb-b30c-48ae-bf21-c683c2ab4917",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

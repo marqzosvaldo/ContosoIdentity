@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Contoso.Server.Data;
 using Contoso.Server.Models;
 using IdentityServer4.Services;
@@ -27,7 +28,18 @@ namespace Contoso.Server {
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnectionLAN")));
+            services.AddAuthentication().AddFacebook(facebookOptions => {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
 
+                facebookOptions.Events = new Microsoft.AspNetCore.Authentication.OAuth.OAuthEvents() {
+                    OnRemoteFailure = LoginFailureHandler => {
+                        var authProperties = facebookOptions.StateDataFormat.Unprotect(LoginFailureHandler.Request.Query["state"]);
+                        LoginFailureHandler.Response.Redirect("/Identity/Account/Login");
+                        return Task.FromResult(0);
+                    }
+                };
+            });
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

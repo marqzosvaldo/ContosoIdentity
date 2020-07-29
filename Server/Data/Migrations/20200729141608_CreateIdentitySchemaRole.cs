@@ -189,12 +189,12 @@ namespace Contoso.Server.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6477b104-08a6-4eb9-ae9b-e9dbd4d1d590", "6030ee11-78a8-4066-8b21-f0060d3721fa", "User", "USER" });
+                values: new object[] { "295781b0-faa1-45bc-8c3a-b6879161e7cb", "0b83f6f8-75be-4b72-a882-48445f41c1f6", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "29346c36-7ebf-4f33-b983-563cfb92842a", "098d2f72-3bcf-429b-b5ae-75038bbd2721", "Admin", "ADMIN" });
+                values: new object[] { "a94bc94d-d64f-4788-a986-2922f6e31455", "556005eb-b30c-48ae-bf21-c683c2ab4917", "Admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
