@@ -1,6 +1,7 @@
 using System.Linq;
 using Contoso.Server.Data;
 using Contoso.Server.Models;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -27,7 +28,8 @@ namespace Contoso.Server {
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnectionLAN")));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
@@ -35,6 +37,8 @@ namespace Contoso.Server {
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
+            services.AddTransient<IProfileService, ProfileService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
