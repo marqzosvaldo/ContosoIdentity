@@ -20,26 +20,29 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in Usuarios)
+            @foreach (var item in Usuarios)
             {
                 <tr>
-                    <td>@user.UserName</td>
-                    <td>@user.Email</td>
+                    <td>@item.UserName</td>
+                    <td>@item.Email</td>
+                    <td><button class="btn-primary" @onclick="@(()=>GetPDF(item.Id))">PDF</button></td>
                 </tr>
+         
             }
         </tbody>
     </table>
 }
 @code{
     List<ApplicationUser> Usuarios { get; set; }
-
+    
+    private void GetPDF(string id){
+        System.Console.WriteLine(id);
+    }
     protected async override Task OnInitializedAsync() {
         var response = await userRepository.GetUsers();
         Usuarios = response;
         response.Count();
-        System.Console.WriteLine($"ResponseINIT: {response[0].Email}");
-        System.Console.WriteLine($"ResponseINIT1: {response[0].UserName}");
-        System.Console.WriteLine($"ResponseINIT2: {response[0].UserName}");
+     
         System.Console.WriteLine($"UsrersList: {Usuarios.Count()}");
     }
 }
