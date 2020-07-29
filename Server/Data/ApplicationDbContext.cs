@@ -1,5 +1,5 @@
 ﻿using System;
-using Contoso.Server.Models;
+using Contoso.Shared.Entities;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Contoso.Server.Data {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
-        
+
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions) { }
@@ -20,5 +20,7 @@ namespace Contoso.Server.Data {
             builder.Entity<IdentityRole>()
                 .HasData(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN", Id = Guid.NewGuid().ToString(), ConcurrencyStamp = Guid.NewGuid().ToString() });
         }
+
+        DbSet<ApplicationUser> Usuarios { get; set; }
     }
 }

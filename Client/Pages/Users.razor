@@ -1,11 +1,45 @@
 @page "/users"
 @using Microsoft.AspNetCore.Authorization
+@inject IUserRepository userRepository
+
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @attribute [Authorize(Roles="Admin")]  
 
 @* aA123456S! *@
 
 <h3>Users</h3>
-
+@if(Usuarios ==  null){
+    <span>No user records</span>
+}else{
+      <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Usuarios)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 @code{
+    List<ApplicationUser> Usuarios { get; set; }
+
+    protected async override Task OnInitializedAsync() {
+        var response = await userRepository.GetUsers();
+        Usuarios = response;
+        response.Count();
+        System.Console.WriteLine($"ResponseINIT: {response[0].Email}");
+        System.Console.WriteLine($"ResponseINIT1: {response[0].UserName}");
+        System.Console.WriteLine($"ResponseINIT2: {response[0].UserName}");
+        System.Console.WriteLine($"UsrersList: {Usuarios.Count()}");
+    }
 }

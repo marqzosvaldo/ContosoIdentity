@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Contoso.Server.Data;
-using Contoso.Server.Models;
+using Contoso.Shared.Entities;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
