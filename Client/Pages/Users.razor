@@ -1,6 +1,7 @@
 @page "/users"
 @using Microsoft.AspNetCore.Authorization
 @inject IUserRepository userRepository
+@inject IJSRuntime js
 
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @attribute [Authorize(Roles="Admin")]  
@@ -20,12 +21,12 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Usuarios)
+            @foreach (var user in Usuarios)
             {
                 <tr>
-                    <td>@item.UserName</td>
-                    <td>@item.Email</td>
-                    <td><button class="btn-primary" @onclick="@(()=>GetPDF(item.Id))">PDF</button></td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td><button class="btn-primary" @onclick="@(()=>GetPDF(user))">PDF</button></td>
                 </tr>
          
             }
@@ -34,15 +35,25 @@
 }
 @code{
     List<ApplicationUser> Usuarios { get; set; }
-    
-    private void GetPDF(string id){
-        System.Console.WriteLine(id);
+    ApplicationUser User { get; set; }
+
+    private void GetPDF(ApplicationUser user) {
+        User =user;
+        System.Console.WriteLine($"User Selected UserName: {user.UserName}");
+        CreateFile();
     }
     protected async override Task OnInitializedAsync() {
         var response = await userRepository.GetUsers();
         Usuarios = response;
         response.Count();
-     
+
         System.Console.WriteLine($"UsrersList: {Usuarios.Count()}");
+    }
+
+    // PDF Methods
+    private void CreateFile() {
+        var pdf = new Report(User);
+        pdf.Generate(js,1);
+
     }
 }
