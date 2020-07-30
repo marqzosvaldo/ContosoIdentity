@@ -16,6 +16,8 @@ namespace Contoso.Client {
         public static async Task Main(string[] args) {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
+
+            // Registering Services
             ConfigureServices(builder.Services);
 
             builder.Services.AddHttpClient("Contoso.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
@@ -28,8 +30,11 @@ namespace Contoso.Client {
 
             await builder.Build().RunAsync();
         }
+        /// <summary>
+        /// Registering IHTTPService and IUserRepository with an implementation type
+        /// This Method is responsible for defining the services that app uses
+        /// </summary>
         private static void ConfigureServices(IServiceCollection services) {
-            // services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             services.AddScoped<IHttpService, HttpService>();
 
             services.AddScoped<IUserRepository, UserRepository>();

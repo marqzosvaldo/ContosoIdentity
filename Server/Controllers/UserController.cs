@@ -15,6 +15,11 @@ using Microsoft.IdentityModel.Tokens;
 namespace Contoso.Server.Controllers {
     [ApiController]
     [Route("api/[Controller]")]
+    /// <summary>
+    /// This Controller is just for return a 
+    /// Users Collection
+    /// </summary>
+
     public class UserController : ControllerBase {
         private readonly ApplicationDbContext _context;
 

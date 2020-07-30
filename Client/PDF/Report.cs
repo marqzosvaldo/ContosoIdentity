@@ -7,11 +7,16 @@ using iTextSharp.text.pdf;
 using Microsoft.JSInterop;
 
 namespace Contoso.Client.PDF {
+    /// <summary>
+    /// Generate PDF Report 
+    /// using UserPrint class to pass User  Model
+    /// </summary>
     public class Report {
 
         private int _pagenumber;
         ApplicationUser _user;
 
+        // Generate Report from  User Model 
         public Report(ApplicationUser user) {
             _user = user;
         }
@@ -63,7 +68,7 @@ namespace Contoso.Client.PDF {
             );
 
             pdf.AddTitle("Blazor-PDF");
-            pdf.AddAuthor("Christophe Peugnet");
+            pdf.AddAuthor("Ozzvy");
             pdf.AddCreationDate();
             pdf.AddKeywords("blazor");
             pdf.AddSubject("Create a pdf file with iText");
@@ -92,16 +97,6 @@ namespace Contoso.Client.PDF {
 
             if (_pagenumber == 1)
                 UserPrint.PageText(pdf, _user);
-            // else if (_pagenumber == 2)
-            //     Page2.PageBookmark(pdf);
-            // else if (_pagenumber == 3)
-            //     Page3.PageImage(pdf, writer);
-            // else if (_pagenumber == 4)
-            //     Page4.PageTable(pdf, writer);
-            // else if (_pagenumber == 5)
-            //     Page5.PageFonts(pdf, writer);
-            // else if (_pagenumber == 6)
-            //     Page6.PageList(pdf);
 
             pdf.Close();
 

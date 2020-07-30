@@ -4,6 +4,8 @@
 @inject IJSRuntime js
 
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@* Using the authorization by  attribute directive*@
 @attribute [Authorize(Roles="Admin")]  
 
 @* aA123456S! *@
@@ -37,9 +39,12 @@
     List<ApplicationUser> Usuarios { get; set; }
     ApplicationUser User { get; set; }
 
+    /// <summary>
+    /// Get User event click method
+    /// and Calls CreateFile() Method
+    /// </summary>
     private void GetPDF(ApplicationUser user) {
-        User =user;
-        System.Console.WriteLine($"User Selected UserName: {user.UserName}");
+        User = user;
         CreateFile();
     }
     protected async override Task OnInitializedAsync() {
@@ -50,10 +55,12 @@
         System.Console.WriteLine($"UsrersList: {Usuarios.Count()}");
     }
 
-    // PDF Methods
+    /// <summary>
+    /// PDF Method for Create Pdf File
+    /// </summary>
     private void CreateFile() {
         var pdf = new Report(User);
-        pdf.Generate(js,1);
+        pdf.Generate(js, 1);
 
     }
 }

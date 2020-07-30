@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication.Internal;
 
 namespace Contoso.Client {
+    /// <summary>
+    /// This Factory class creates and individual role claim for
+    /// each of  the user's roles
+    /// </summary>
     public class CustomUserFactory
         : AccountClaimsPrincipalFactory<RemoteUserAccount> {
             public CustomUserFactory(IAccessTokenProviderAccessor accessor) : base(accessor) { }

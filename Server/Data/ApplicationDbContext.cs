@@ -7,6 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Contoso.Server.Data {
+    /// <summary>
+    /// Using the support for API authorization and 
+    /// ASP.NET Core  Identity for authenticating and storing  users combining 
+    /// with IdentityServer for implementing OpenIDConnect
+    /// </summary>
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
 
         public ApplicationDbContext(

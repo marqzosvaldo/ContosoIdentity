@@ -4,6 +4,10 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 
 namespace Contoso.Server {
+    /// <summary>
+    /// This class configure IdentityServer
+    /// by ProfileService Approach
+    /// </summary>
     public class ProfileService : IProfileService {
         public ProfileService() { }
 

@@ -4,6 +4,9 @@ using Contoso.Shared.Entities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 namespace Contoso.Client.PDF {
+    /// <summary>
+    /// Page PDF design
+    /// </summary>
     public class UserPrint {
 
         public static void PageText(Document pdf, ApplicationUser User) {

@@ -27,6 +27,7 @@ namespace Contoso.Server {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnectionLAN")));
             services.AddAuthentication().AddFacebook(facebookOptions => {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
@@ -40,16 +41,24 @@ namespace Contoso.Server {
                     }
                 };
             });
+            // Identity with default UI,
+            // Roles Management wich adds role-related services and 
+            // ApplicationDbContext to store
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            
+            // IdentityServer with an additional AddAPIAuthorization helper method that
+            // sets up some default  ASP.NET Core Conventions
+            // and Custom ApplicationUser Model 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
+            
+            // AddIdentityServerJwt helper method that configures the app to validate JWT tokens
+            // produced by IdentityServer
             services.AddAuthentication()
                 .AddIdentityServerJwt();
-
+            // Register the Profile Service 
             services.AddTransient<IProfileService, ProfileService>();
 
             services.AddControllersWithViews();
@@ -73,8 +82,11 @@ namespace Contoso.Server {
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            // The IdentityServer middleware that exposes the OpenID Connect endpoints
             app.UseIdentityServer();
+
+            // Authentication middleware that is responsible for validating the request credentials and setting
+            // the user on the request  context
             app.UseAuthentication();
             app.UseAuthorization();
 
