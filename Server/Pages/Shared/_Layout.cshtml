@@ -13,6 +13,8 @@
     <div class="main">
         <div class="content px-4">
             @RenderBody()
+               @*This line is added to correct Scrips Error in Identity pages*@
+            @RenderSection("Scripts", required: false)
         </div>
     </div>
 </body>
