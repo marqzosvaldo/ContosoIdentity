@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Contoso.Server.Data;
+using Contoso.Server.Email;
 using Contoso.Shared.Entities;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,10 +30,14 @@ namespace Contoso.Server {
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnectionLAN")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DockerConnectionLocal")));
             services.AddAuthentication().AddFacebook(facebookOptions => {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                // ask permissions
+                facebookOptions.Scope.Add("pages_manage_posts");
+                facebookOptions.Scope.Add("user_birthday");
+                facebookOptions.SaveTokens = true;
 
                 facebookOptions.Events = new Microsoft.AspNetCore.Authentication.OAuth.OAuthEvents() {
                     OnRemoteFailure = LoginFailureHandler => {
@@ -47,19 +53,21 @@ namespace Contoso.Server {
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
             // IdentityServer with an additional AddAPIAuthorization helper method that
             // sets up some default  ASP.NET Core Conventions
             // and Custom ApplicationUser Model 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-            
+
             // AddIdentityServerJwt helper method that configures the app to validate JWT tokens
             // produced by IdentityServer
             services.AddAuthentication()
                 .AddIdentityServerJwt();
             // Register the Profile Service 
             services.AddTransient<IProfileService, ProfileService>();
+
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
